@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Maybe add hover stuff
 const StyledCard = styled.div`
@@ -21,11 +21,12 @@ const CardImage = styled.img`
 `;
 
 function Card({ imageURL, id }) {
+  const navigate = useNavigate();
   return (
-    <StyledCard>
-      <Link to={`/food/${id}`}>
-        <CardImage src={imageURL} alt="Car" />
-      </Link>
+    <StyledCard
+      onClick={() => navigate(`/food/${id}`, { state: { imageURL: imageURL } })}
+    >
+      <CardImage src={imageURL} alt="Car" />
     </StyledCard>
   );
 }
