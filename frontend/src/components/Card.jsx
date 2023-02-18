@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // Maybe add hover stuff
 const StyledCard = styled.div`
@@ -20,12 +21,15 @@ const CardImage = styled.img`
 `;
 
 function Card() {
+  const id = 123;
   return (
-    <StyledCard onClick={() => console.log("yo")}>
-      <CardImage
-        src="https://i.pinimg.com/750x/f4/d1/9c/f4d19cecd5d24e19376ac78d30131c97.jpg"
-        alt="Car"
-      />
+    <StyledCard>
+      <Link to={`/food/${id}`}>
+        <CardImage
+          src="https://i.pinimg.com/750x/f4/d1/9c/f4d19cecd5d24e19376ac78d30131c97.jpg"
+          alt="Car"
+        />
+      </Link>
     </StyledCard>
   );
 }
