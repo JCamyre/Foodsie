@@ -20,15 +20,11 @@ const CardImage = styled.img`
   border-radius: 24px;
 `;
 
-function Card() {
-  const id = 123;
+function Card({ imageURL, id }) {
   return (
     <StyledCard>
       <Link to={`/food/${id}`}>
-        <CardImage
-          src="https://i.pinimg.com/750x/f4/d1/9c/f4d19cecd5d24e19376ac78d30131c97.jpg"
-          alt="Car"
-        />
+        <CardImage src={imageURL} alt="Car" />
       </Link>
     </StyledCard>
   );
