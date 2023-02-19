@@ -43,7 +43,6 @@ function Home() {
     });
   }, []);
 
-  console.log(likedFoods);
   return (
     <div style={{ padding: "50px", paddingTop: "25px" }}>
       <div
@@ -69,7 +68,13 @@ function Home() {
           })}
         {!foods && <ReactLoading type={"bubbles"} color={"black"} />}
       </div>
-      <button>User clicks this when they are done liking images</button>
+      <button
+        onClick={() => {
+          console.log(likedFoods);
+        }}
+      >
+        User clicks this when they are done liking images
+      </button>
     </div>
   );
 }

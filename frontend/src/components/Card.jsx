@@ -50,8 +50,17 @@ function Card({
       />
       <Heart
         onClick={() => {
+          if (liked) {
+            // If we already liked this post, and we click heart again, we want to unlike
+            // So remove this food from likedFoods.
+            const index = currentLikedFoods.indexOf(id);
+            console.log(currentLikedFoods[index], index);
+            currentLikedFoods.splice(index, 1);
+            likeSetter(currentLikedFoods);
+          } else {
+            likeSetter(currentLikedFoods.concat([id]));
+          }
           setLiked(!liked);
-          likeSetter(currentLikedFoods.concat([id]));
         }}
         isActive={liked}
         style={{ height: "50px" }}
