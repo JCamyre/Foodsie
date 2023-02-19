@@ -2,6 +2,9 @@
 import os
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
+import json
+import random
+from query_recs import get_model_info, extract_food, generate_item_rec, regenerate_item_rec
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -11,6 +14,7 @@ cred = credentials.Certificate('./key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 users_ref = db.collection('users')  # get the Users
+food_ref = db.collection('foods')  # get the Foods
 
 # Syntax ... url/add?id=this-id
 # we want to get this-id
@@ -89,17 +93,37 @@ def update():
     except Exception as e:
         return f"An Error Occurred: {e}"
 
+# generate recommendations
 
-@app.route('/delete', methods=['GET', 'DELETE'])
-def delete():
-    """
-        delete() : Delete a document from Firestore collection.
+
+@app.route('/genrecs', methods=['GET'])
+def genrecs():
+    """"
+    genrecs(): generates the recommendations based on the user profile
+    input: user_id
+    We take user_id, and we grab the list of foods that they like
+    Call the food_firebase, get corresponding captions and put in a list
+    Feed into the query_recs function
+    Return recommendation, which is a str
     """
     try:
-        # Check for ID in URL query
+        # Check if ID was passed to URL query
         user_id = request.args.get('id')
-        users_ref.document(user_id).delete()
-        return jsonify({"success": True}), 200
+        if user_id:
+            user = users_ref.document(user_id).get()
+            foods = (user.to_dict())['food']
+
+            food_captions = []
+            for item in foods:
+                cap = food_ref.document(item).get().to_dict()['caption']
+                food_captions.append(cap)
+
+            extracted = extract_food(food_captions)
+            rec = generate_item_rec(extracted)
+            return rec, 200
+        else:
+            all_users = [doc.to_dict() for doc in users_ref.stream()]
+            return jsonify(all_users), 200
     except Exception as e:
         return f"An Error Occurred: {e}"
 
