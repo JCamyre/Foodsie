@@ -225,34 +225,39 @@ def genrecs():
 def regen():
     """"
     regen(): generates new recommendations based on their dislikes likes
-    input: id, get original generation
-    We take user_id, and we grab the list of foods that they like
-    Call the food_firebase, get corresponding captions and put in a list
-    Feed into the query_recs function
-    Return recommendation, which is a str
+    input: id, disliked flavors (str), disliked foods (str), new cultures (str) 
+    We take user_id, and we grab the original generation
+    Return new recommendation, which is a str
     """
     try:
         # Check if ID was passed to URL query
         user_id = request.args.get('id')
-        cuisines = request.args.get('c')
+        dis_flavors = request.args.get('dfl')
+        dis_foods = request.args.get('dfo')
+        new_cultures = request.args.get('nc')
+
         if user_id:
             user = users_ref.document(user_id).get()
-            foods = (user.to_dict())['food']
+            orig_rec = (user.to_dict())['rec']
 
-            food_captions = []
-            for item in foods:
-                cap = food_ref.document(item).get().to_dict()['caption']
-                food_captions.append(cap)
-
-            extracted = extract_food(food_captions)
-
-            if cuisines:
-                cuisines = [cuisines]
+            if dis_flavors:
+                dis_flavors = [dis_flavors]
             else:
-                cuisines = None
-                
-            rec = generate_item_rec(extracted, cuisines)['choices'][0]['text']
+                dis_flavors = []
+            
+            if dis_foods:
+                dis_foods = [dis_foods]
+            else:
+                dis_foods = []
 
+            if new_cultures:
+                new_cultures = [new_cultures]
+            else:
+                new_cultures = []
+                
+            rec = regenerate_item_rec(orig_rec, dis_flavors, dis_foods, new_cultures)['choices'][0]['text']
+            users_ref.document(user_id).update({'rec': rec})
+            
             return rec, 200
         else:
             all_users = [doc.to_dict() for doc in users_ref.stream()]
