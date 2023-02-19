@@ -1,54 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../components/Card";
+import axios from "axios";
+import { convertRoutesToDataRoutes } from "../../node_modules/@remix-run/router/utils";
 
 // Maybe make it like the pinterest images, where it looks cooler.
 
+function convertIDtoImageURL(id) {
+  const imageFormat = `https://s3-media0.fl.yelpcdn.com/bphoto/${id}/o.jpg`;
+  return imageFormat;
+}
+
 const Foods = [
   {
-    imageURL:
-      "https://i.pinimg.com/750x/f4/d1/9c/f4d19cecd5d24e19376ac78d30131c97.jpg",
-    id: 17,
+    imageURL: convertIDtoImageURL("--8pNvGp9ICBjJVck2OnTQ"),
+    id: "--8pNvGp9ICBjJVck2OnTQ",
   },
   {
-    imageURL:
-      "https://i.pinimg.com/564x/a2/d8/65/a2d8651e48ef054f370cbd874c7320c1.jpg",
-    id: 42,
+    imageURL: convertIDtoImageURL("--Kofko5jy33_vPJOEt4Ow"),
+    id: "--Kofko5jy33_vPJOEt4Ow",
   },
   {
-    imageURL:
-      "https://i.pinimg.com/564x/47/70/8b/47708b6ccad6e93880a17a9ab3204fc7.jpg",
-    id: 73,
+    imageURL: convertIDtoImageURL("--S9xLJbQcfk74xKCkBAwA"),
+    id: "--S9xLJbQcfk74xKCkBAwA",
   },
   {
-    imageURL:
-      "https://i.pinimg.com/564x/69/84/d0/6984d0f7c6c6298ac2d4037d69455103.jpg",
-    id: 84,
+    imageURL: convertIDtoImageURL("--WqMu3zPYVePmsxABqhAA"),
+    id: '--WqMu3zPYVePmsxABqhAA"',
   },
 
   {
-    imageURL:
-      "https://i.pinimg.com/564x/47/70/8b/47708b6ccad6e93880a17a9ab3204fc7.jpg",
-    id: 73,
+    imageURL: convertIDtoImageURL("--j4xVIdIlYpOmZbs7iszg"),
+    id: "--j4xVIdIlYpOmZbs7iszg",
   },
   {
-    imageURL:
-      "https://i.pinimg.com/564x/a2/d8/65/a2d8651e48ef054f370cbd874c7320c1.jpg",
-    id: 42,
+    imageURL: convertIDtoImageURL("--zScnI03KioBVMtcOK6oQ"),
+    id: "--zScnI03KioBVMtcOK6oQ",
   },
 
   {
-    imageURL:
-      "https://i.pinimg.com/564x/69/84/d0/6984d0f7c6c6298ac2d4037d69455103.jpg",
-    id: 84,
+    imageURL: convertIDtoImageURL("-0CCRlDxKDrooC9a3ZoF9A"),
+    id: "-0CCRlDxKDrooC9a3ZoF9A",
   },
   {
-    imageURL:
-      "https://i.pinimg.com/750x/f4/d1/9c/f4d19cecd5d24e19376ac78d30131c97.jpg",
-    id: 17,
+    imageURL: convertIDtoImageURL("-0VVXIyqTCQUGVQ56lvnrw"),
+    id: "-0VVXIyqTCQUGVQ56lvnrw",
   },
 ];
 
 function Home() {
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8080/list?id=AVXPpWI14yRq6kHL3oecWg")
+      .then((res) => {
+        console.log(res["data"]);
+      });
+  }, []);
   return (
     <div style={{ padding: "50px", paddingTop: "25px" }}>
       <div
