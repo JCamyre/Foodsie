@@ -1,4 +1,4 @@
-# FUGMA
+# Foodsie
 
 ## Inspiration
 
