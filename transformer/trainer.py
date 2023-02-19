@@ -19,11 +19,11 @@ class TrainerConfig:
     batch_size = 64
     learning_rate = 3e-3
     betas = (0.94, 0.95)
-    grad_norm_clip = 1.0
+    grad_norm_clip = 0.9
     weight_decay = 0.1  # only applied on matmul weights
-    lr_decay = False
-    warmup_tokens = 375e6 # these two numbers come from the GPT-3 paper, but may not be good defaults elsewhere
-    final_tokens = 260e9 # (at what point we reach 10% of original LR)
+    lr_decay = True
+    warmup_tokens = 350e6 # these two numbers come from the GPT-3 paper, but may not be good defaults elsewhere
+    final_tokens = 250e9 # (at what point we reach 10% of original LR)
     # checkpoint settings
     ckpt_path = None
     num_workers = 0 # for DataLoader
@@ -47,11 +47,6 @@ class Trainer:
             self.device = torch.cuda.current_device()
             self.model = torch.nn.DataParallel(self.model).to(self.device)
 
-    def save_checkpoint(self):
-        if self.config.ckpt_path is not None:
-            ckpt_model = self.model.module if hasattr(self.model, "module") else self.model
-            logger.info("saving %s", self.config.ckpt_path)
-            torch.save(ckpt_model.state_dict(), self.config.ckpt_path)
 
     def train(self):
         model, config = self.model, self.config
@@ -129,5 +124,3 @@ class Trainer:
             run_epoch('train')
             if self.test_dataset is not None:
                 run_epoch('test')
-
-            self.save_checkpoint()
