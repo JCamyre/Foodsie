@@ -50,8 +50,7 @@ const Foods = [
 
 function Home() {
   return (
-    <div style={{ padding: "50px" }}>
-      <h1>Home page</h1>
+    <div style={{ padding: "50px", paddingTop: "25px" }}>
       <div
         style={{
           display: "flex",

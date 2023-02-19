@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
+import Heart from "react-heart";
 
 // Maybe add hover stuff
 const StyledCard = styled.div`
@@ -20,13 +21,27 @@ const CardImage = styled.img`
   border-radius: 24px;
 `;
 
-function Card({ imageURL, id }) {
+// Whenever the card gets liked, make a post request to data
+
+function Card({ imageURL, id, cardLiked }) {
   const navigate = useNavigate();
+  const [liked, setLiked] = useState(false);
+
   return (
-    <StyledCard
-      onClick={() => navigate(`/food/${id}`, { state: { imageURL: imageURL } })}
-    >
-      <CardImage src={imageURL} alt="Car" />
+    <StyledCard>
+      <Heart
+        onClick={() => {
+          setLiked(!liked);
+        }}
+        isActive={liked}
+      />
+      <CardImage
+        onClick={() =>
+          navigate(`/food/${id}`, { state: { imageURL: imageURL } })
+        }
+        src={imageURL}
+        alt="Car"
+      />
     </StyledCard>
   );
 }
