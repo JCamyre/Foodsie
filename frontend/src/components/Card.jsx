@@ -23,7 +23,15 @@ const CardImage = styled.img`
 
 // Whenever the card gets liked, make a post request to data
 
-function Card({ imageURL, id, cardLiked = false, caption, foodPage = false }) {
+function Card({
+  imageURL,
+  id,
+  cardLiked = false,
+  caption,
+  foodPage = false,
+  currentLikedFoods = [],
+  likeSetter,
+}) {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(cardLiked);
 
@@ -43,6 +51,7 @@ function Card({ imageURL, id, cardLiked = false, caption, foodPage = false }) {
       <Heart
         onClick={() => {
           setLiked(!liked);
+          likeSetter(currentLikedFoods.concat([id]));
         }}
         isActive={liked}
         style={{ height: "50px" }}

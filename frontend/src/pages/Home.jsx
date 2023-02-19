@@ -12,6 +12,7 @@ function convertIDtoImageURL(id) {
 
 function Home() {
   const [foods, setFoods] = useState(false);
+  const [likedFoods, setLikeFoods] = useState([]);
   const ids = [
     "--8pNvGp9ICBjJVck2OnTQ",
     "--Kofko5jy33_vPJOEt4Ow",
@@ -41,6 +42,8 @@ function Home() {
       setFoods(foods);
     });
   }, []);
+
+  console.log(likedFoods);
   return (
     <div style={{ padding: "50px", paddingTop: "25px" }}>
       <div
@@ -59,6 +62,8 @@ function Home() {
                 imageURL={convertIDtoImageURL(imageObject["photo_id"])}
                 id={imageObject["photo_id"]}
                 caption={imageObject["caption"]}
+                currentLikedFoods={likedFoods}
+                likeSetter={setLikeFoods}
               />
             );
           })}
