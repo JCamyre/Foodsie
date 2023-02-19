@@ -30,6 +30,30 @@ def create():
     except Exception as e:
         return f"An Error Occurred: {e}"
 
+# user is done inputting favorited restaurants
+
+
+@app.route('/finished', methods=['GET', 'POST'])
+def finished():
+    """
+    finished() : post the "liked" foods into the firebase
+    input: pass in an array of food_ids
+    url/finished?id=id&foods=
+    """
+    try:
+        user_id = request.args.get('id')
+        food_list = request.args.get('foods')
+        food_list = ['test']
+        if user_id:
+            field_updates = {"food": food_list}
+            users_ref.document(user_id).update(field_updates)
+            return jsonify({"success": True}), 200
+        else:
+            raise Exception("No user inputted")
+
+    except Exception as e:
+        return f"An Error Occured: {e}"
+
 
 @app.route('/list', methods=['GET'])
 def read():
