@@ -26,7 +26,7 @@ function Home() {
       // an array of Promises waiting to be resolved
       // if we did axios.get().then(), then we are expecting it to be resolved alr, since we are returning
       let promises = ids["data"].map((id) => {
-        return axios.get(`http://127.0.0.1:8080/list?id=${id}`);
+        return axios.get(`http://127.0.0.1:8080/food-list?id=${id}`);
       });
       return await Promise.all(promises).then((data) => {
         return data;
@@ -42,12 +42,10 @@ function Home() {
   }, []);
 
   function updateUserLikes() {
-    axios.post("http://localhost:8080/finished", {
+    axios.get("http://localhost:8080/finished", {
       params: {
-        likedFoods: likedFoods,
-      },
-      paramsSerializer: (params) => {
-        return qs.stringify(params);
+        foods: JSON.stringify(likedFoods),
+        id: "test-user",
       },
     });
   }

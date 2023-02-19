@@ -120,7 +120,7 @@ def user_finished():
     try:
         user_id = request.args.get('id')
         food_list = request.args.get('foods')
-        food_list = ['test']
+        # food_list = ['test']
         if user_id:
             field_updates = {"food": food_list}
             users_ref.document(user_id).update(field_updates)
@@ -169,4 +169,4 @@ def user_update():
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=port)
+    app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
