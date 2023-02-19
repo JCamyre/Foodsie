@@ -38,13 +38,13 @@ function Card({
   return (
     <StyledCard>
       <CardImage
-        onClick={() => {
-          if (!foodPage) {
-            navigate(`/food/${id}`, {
-              state: { imageURL: imageURL, liked: liked, caption: caption },
-            });
-          }
-        }}
+        // onClick={() => {
+        //   if (!foodPage) {
+        //     navigate(`/food/${id}`, {
+        //       state: { imageURL: imageURL, liked: liked, caption: caption },
+        //     });
+        //   }
+        // }}
         src={imageURL}
         alt={caption}
       />

@@ -15,6 +15,7 @@ function Navbar() {
     <div
       style={{
         display: "flex",
+        justifyContent: "flex-start",
         height: "75px",
         padding: "20px",
         backgroundColor: "#967BB6",
@@ -22,8 +23,8 @@ function Navbar() {
     >
       <Link to="/">
         <LogoButton
-          src="https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipe%20Ramp%20Up%2F2022-07-Bison-Burger%2Fbison-burger-2"
-          alt="Bison Burger"
+          src="/logo.png"
+          alt="Logo"
           style={{ maxHeight: "100%", borderRadius: "24px" }}
         />
       </Link>

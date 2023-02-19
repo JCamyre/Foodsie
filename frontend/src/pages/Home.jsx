@@ -3,6 +3,7 @@ import Card from "../components/Card";
 import axios from "axios";
 import ReactLoading from "react-loading";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // Maybe make it like the pinterest images, where it looks cooler.
 
@@ -57,11 +58,12 @@ function Home() {
 
   async function updateUserLikes() {
     console.log(JSON.stringify(likedFoods));
+    console.log(JSON.stringify(cuisines));
     await axios.get("http://localhost:8080/finished", {
       params: {
         foods: JSON.stringify(likedFoods),
         id: "test-user",
-        cuisines: JSON.stringify(cuisines),
+        c: JSON.stringify(cuisines),
       },
     });
   }
@@ -91,27 +93,50 @@ function Home() {
           })}
         {!foods && <ReactLoading type={"bubbles"} color={"black"} />}
       </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          updateUserLikes();
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "40px",
+          paddingBottom: "40px",
         }}
       >
-        <label>
-          Which cuisines do you want to try!
-          <textarea
-            id="cuisines"
-            name="cuisines"
-            type="text"
-            value={cuisines}
-            onChange={(event) => {
-              setCuisines(event.target.value);
+        <div
+          style={{
+            borderRadius: "24px",
+            width: "80%",
+            backgroundColor: "#ffffff",
+            padding: "24px",
+            fontSize: "30px",
+            display: "block",
+          }}
+        >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              updateUserLikes();
             }}
-          />
-        </label>
-        <br />
-        <GenerateRecs type="submit" value="Generate Recommendations!" />
-      </form>
+          >
+            <label>
+              Which cuisines do you want to try?
+              <textarea
+                id="cuisines"
+                name="cuisines"
+                type="text"
+                value={cuisines}
+                onChange={(event) => {
+                  setCuisines(event.target.value);
+                }}
+              />
+            </label>
+            <br />
+            <Link to="/recommendation/test-user">
+              <GenerateRecs type="submit" value="Generate Recommendations!" />
+            </Link>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
