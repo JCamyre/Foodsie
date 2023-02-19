@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import axios from "axios";
 
@@ -9,52 +9,8 @@ function convertIDtoImageURL(id) {
   return imageFormat;
 }
 
-const Foods = [
-  {
-    imageURL: convertIDtoImageURL("--8pNvGp9ICBjJVck2OnTQ"),
-    id: "--8pNvGp9ICBjJVck2OnTQ",
-    caption: "Food 1",
-  },
-  {
-    imageURL: convertIDtoImageURL("--Kofko5jy33_vPJOEt4Ow"),
-    id: "--Kofko5jy33_vPJOEt4Ow",
-    caption: "Food 2",
-  },
-  {
-    imageURL: convertIDtoImageURL("--S9xLJbQcfk74xKCkBAwA"),
-    id: "--S9xLJbQcfk74xKCkBAwA",
-    caption: "Food 3",
-  },
-  {
-    imageURL: convertIDtoImageURL("--WqMu3zPYVePmsxABqhAA"),
-    id: "--WqMu3zPYVePmsxABqhAA",
-    caption: "Food 4",
-  },
-
-  {
-    imageURL: convertIDtoImageURL("--j4xVIdIlYpOmZbs7iszg"),
-    id: "--j4xVIdIlYpOmZbs7iszg",
-    caption: "Food 5",
-  },
-  {
-    imageURL: convertIDtoImageURL("--zScnI03KioBVMtcOK6oQ"),
-    id: "--zScnI03KioBVMtcOK6oQ",
-    caption: "Food 6",
-  },
-
-  {
-    imageURL: convertIDtoImageURL("-0CCRlDxKDrooC9a3ZoF9A"),
-    id: "-0CCRlDxKDrooC9a3ZoF9A",
-    caption: "Food 7",
-  },
-  {
-    imageURL: convertIDtoImageURL("-0VVXIyqTCQUGVQ56lvnrw"),
-    id: "-0VVXIyqTCQUGVQ56lvnrw",
-    caption: "Food 8",
-  },
-];
-
 function Home() {
+  const [foods, setFoods] = useState(false);
   const ids = [
     "--8pNvGp9ICBjJVck2OnTQ",
     "--Kofko5jy33_vPJOEt4Ow",
@@ -78,9 +34,11 @@ function Home() {
     }
 
     getFood().then(async (res) => {
-      res.map((food) => {
-        console.log(food["data"]);
+      const foods = res.map((food) => {
+        return food["data"];
       });
+      setFoods(foods);
+      console.log(foods);
     });
   }, []);
   return (
@@ -93,16 +51,17 @@ function Home() {
           flexWrap: "wrap",
         }}
       >
-        {Foods.map((imageObject, key) => {
-          return (
-            <Card
-              key={key}
-              imageURL={imageObject["imageURL"]}
-              id={imageObject["id"]}
-              caption={imageObject["caption"]}
-            />
-          );
-        })}
+        {foods &&
+          foods.map((imageObject, key) => {
+            return (
+              <Card
+                key={key}
+                imageURL={convertIDtoImageURL(imageObject["photo_id"])}
+                id={imageObject["photo_id"]}
+                caption={imageObject["caption"]}
+              />
+            );
+          })}
       </div>
       <button>User clicks this when they are done liking images</button>
     </div>
