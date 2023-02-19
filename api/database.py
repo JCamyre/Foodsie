@@ -167,6 +167,38 @@ def user_update():
         return f"An Error Occurred: {e}"
 
 
+@app.route('/genrecs', methods=['GET'])
+def genrecs():
+    """"
+    genrecs(): generates the recommendations based on the user profile
+    input: user_id
+    We take user_id, and we grab the list of foods that they like
+    Call the food_firebase, get corresponding captions and put in a list
+    Feed into the query_recs function
+    Return recommendation, which is a str
+    """
+    try:
+        # Check if ID was passed to URL query
+        user_id = request.args.get('id')
+        if user_id:
+            user = users_ref.document(user_id).get()
+            foods = (user.to_dict())['food']
+
+            food_captions = []
+            for item in foods:
+                cap = food_ref.document(item).get().to_dict()['caption']
+                food_captions.append(cap)
+
+            extracted = extract_food(food_captions)
+            rec = generate_item_rec(extracted)
+            return rec, 200
+        else:
+            all_users = [doc.to_dict() for doc in users_ref.stream()]
+            return jsonify(all_users), 200
+    except Exception as e:
+        return f"An Error Occurred: {e}"
+
+
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
