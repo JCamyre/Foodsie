@@ -49,7 +49,7 @@ def food_init():
     init(): returns a list of 50 random food pictures from the database 
     """
     to_choose = []
-    f = open('./init_recs.json')
+    f = open('./cleaned_yelp_photos.json')
     for line in f:
         data = json.loads(line)
         to_choose.append(data['photo_id'])
@@ -257,7 +257,7 @@ def regen():
                 
             rec = regenerate_item_rec(orig_rec, dis_flavors, dis_foods, new_cultures)['choices'][0]['text']
             users_ref.document(user_id).update({'rec': rec})
-            
+
             return rec, 200
         else:
             all_users = [doc.to_dict() for doc in users_ref.stream()]
