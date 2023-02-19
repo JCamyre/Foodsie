@@ -17,7 +17,7 @@ function Navbar() {
         display: "flex",
         height: "75px",
         padding: "20px",
-        backgroundColor: "white",
+        backgroundColor: "#967BB6",
       }}
     >
       <Link to="/">

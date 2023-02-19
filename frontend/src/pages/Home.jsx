@@ -11,10 +11,12 @@ function convertIDtoImageURL(id) {
   return imageFormat;
 }
 
-const GenerateRecs = styled.button`
+const GenerateRecs = styled.input`
   height: 100px;
   width: 200px;
-  border: 1px solid black;
+  background-color: #967bb6;
+  border-radius: 12px;
+  color: #ffffff;
   transition: ease-out 0.1s;
   &:hover {
     cursor: pointer;
@@ -25,6 +27,7 @@ const GenerateRecs = styled.button`
 function Home() {
   const [foods, setFoods] = useState(false);
   const [likedFoods, setLikeFoods] = useState([]);
+  const [cuisines, setCuisines] = useState("");
 
   useEffect(() => {
     async function getFood() {
@@ -52,11 +55,13 @@ function Home() {
     });
   }, []);
 
-  function updateUserLikes() {
-    axios.get("http://localhost:8080/finished", {
+  async function updateUserLikes() {
+    console.log(JSON.stringify(likedFoods));
+    await axios.get("http://localhost:8080/finished", {
       params: {
         foods: JSON.stringify(likedFoods),
         id: "test-user",
+        cuisines: JSON.stringify(cuisines),
       },
     });
   }
@@ -86,13 +91,27 @@ function Home() {
           })}
         {!foods && <ReactLoading type={"bubbles"} color={"black"} />}
       </div>
-      <GenerateRecs
-        onClick={() => {
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
           updateUserLikes();
         }}
       >
-        <h2>Generate Recommendations!</h2>
-      </GenerateRecs>
+        <label>
+          Which cuisines do you want to try!
+          <textarea
+            id="cuisines"
+            name="cuisines"
+            type="text"
+            value={cuisines}
+            onChange={(event) => {
+              setCuisines(event.target.value);
+            }}
+          />
+        </label>
+        <br />
+        <GenerateRecs type="submit" value="Generate Recommendations!" />
+      </form>
     </div>
   );
 }
