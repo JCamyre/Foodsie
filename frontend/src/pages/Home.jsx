@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import axios from "axios";
 import ReactLoading from "react-loading";
-import * as qs from "qs";
+import styled from "styled-components";
 
 // Maybe make it like the pinterest images, where it looks cooler.
 
@@ -10,6 +10,17 @@ function convertIDtoImageURL(id) {
   const imageFormat = `https://s3-media0.fl.yelpcdn.com/bphoto/${id}/o.jpg`;
   return imageFormat;
 }
+
+const GenerateRecs = styled.button`
+  height: 100px;
+  width: 200px;
+  border: 1px solid black;
+  transition: ease-out 0.1s;
+  &:hover {
+    cursor: pointer;
+    transform: scale(0.95);
+  }
+`;
 
 function Home() {
   const [foods, setFoods] = useState(false);
@@ -75,13 +86,13 @@ function Home() {
           })}
         {!foods && <ReactLoading type={"bubbles"} color={"black"} />}
       </div>
-      <button
+      <GenerateRecs
         onClick={() => {
           updateUserLikes();
         }}
       >
-        User clicks this when they are done liking images
-      </button>
+        <h2>Generate Recommendations!</h2>
+      </GenerateRecs>
     </div>
   );
 }
