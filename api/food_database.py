@@ -15,7 +15,7 @@ app = Flask(__name__)
 cred = credentials.Certificate('api/key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
-users_ref = db.collection('users')  # get the Users
+users_ref = db.collection('foods')  # get the Users
 
 # Syntax ... url/add?id=this-id
 # we want to get this-id
