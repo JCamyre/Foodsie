@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "../components/Card";
-import { useNavigate } from "react-router-dom";
+
+// Maybe make it like the pinterest images, where it looks cooler.
 
 const Foods = [
   {
@@ -48,8 +49,6 @@ const Foods = [
 ];
 
 function Home() {
-  const navigate = useNavigate();
-
   return (
     <div>
       <h1>Home page</h1>
