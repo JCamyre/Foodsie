@@ -61,9 +61,10 @@ def generate_item_rec(liked_foods: List[str], new_cultures: any = None) -> str:
               """
     if new_cultures is not None:
         prompt = f"""
-              Given that I like {liked_foods}, create a description of my flavor profile, describing
-   what kinds of flavors I like, as well as one new flavor to try. Then, generate some recommendations for other food I should try
-   based on my preferences. Finally, generate some food recommendations from the following cultures: {new_cultures}, with a short explanation of what each dish is.
+              Given that I like {liked_foods}, describe my flavor profile, explaining
+   what kinds of flavors I like, as well as one new flavor to try and why. Then, generate some recommendations for other food I should try
+   based on my preferences, with a short explanation of what each dish is. Finally, generate some food recommendations 
+   from the following cultures: {new_cultures}, with a short explanation of what each dish is.
               """
 
     res = ai.Completion.create(
@@ -114,7 +115,13 @@ def regenerate_item_rec(
     return res
 
 
-print(regenerate_item_rec(orig_input="""Given that I like Fried Chicken, Waffles, and Chicken Noodle Soup, create a description of my flavor profile, describing
-   what kinds of flavors I like, as well as one new flavor to try. Then, generate some recommendations for other food I should try
-   based on my preferences. Finally, generate some food recommendations from the following cultures: African, with a short explanation of what each dish is.""",
-                          disliked_flavors=["Sweet"], disliked_foods=["macaroni and cheese"], new_cultures=["African"]))
+def main():
+    print(regenerate_item_rec(orig_input="""Given that I like Fried Chicken, Waffles, and Chicken Noodle Soup, create a description of my flavor profile, describing
+       what kinds of flavors I like, as well as one new flavor to try. Then, generate some recommendations for other food I should try
+       based on my preferences. Finally, generate some food recommendations from the following cultures: African, with a short explanation of what each dish is.""",
+                              disliked_flavors=["Sweet"], disliked_foods=["macaroni and cheese"],
+                              new_cultures=["African"]))
+
+
+if __name__ == "__main__":
+    main()
