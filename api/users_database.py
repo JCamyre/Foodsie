@@ -7,7 +7,7 @@ from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
 
 # Initialize Firestore DB
-cred = credentials.Certificate('api/key.json')
+cred = credentials.Certificate('./key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 users_ref = db.collection('users')  # get the Users
