@@ -2,17 +2,19 @@
 # TODO: FIX THIS ONE
 # STILL THE SAME AS USERS_DATABASE
 
-
 # # Required imports
 import os
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
+import json
+import random
+from query_recs import get_model_info, extract_food, generate_item_rec, regenerate_item_rec
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # Initialize Firestore DB
-cred = credentials.Certificate('api/key.json')
+cred = credentials.Certificate('./key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 food_ref = db.collection('foods')  # get the Food
@@ -32,6 +34,22 @@ def create():
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occurred: {e}"
+
+# randomly choose 50 random food pictures for the user to choose at first 
+@app.route('/init', methods=['GET'])
+def init():
+    """
+    init(): returns a list of 50 random food pictures from the database 
+    """
+    to_choose = []
+    f = open('./init_recs.json')
+    for line in f:
+        data = json.loads(line)
+        to_choose.append(data['photo_id'])
+
+    choices = list(random.choices(to_choose, k=50))
+    return choices
+
 
 @app.route('/list', methods=['GET'])
 def read():
