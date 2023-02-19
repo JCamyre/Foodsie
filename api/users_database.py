@@ -7,13 +7,15 @@ from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
 
 # Initialize Firestore DB
-cred = credentials.Certificate('api/key.json')
+cred = credentials.Certificate('./key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 users_ref = db.collection('users')  # get the Users
 
 # Syntax ... url/add?id=this-id
 # we want to get this-id
+
+
 @app.route('/add', methods=['POST'])
 def create():
     """
@@ -28,6 +30,7 @@ def create():
     except Exception as e:
         return f"An Error Occurred: {e}"
 
+
 @app.route('/list', methods=['GET'])
 def read():
     """
@@ -41,11 +44,12 @@ def read():
         if user_id:
             user = users_ref.document(user_id).get()
             return jsonify(user.to_dict()), 200
-        else:
-            all_users = [doc.to_dict() for doc in users_ref.stream()]
-            return jsonify(all_users), 200
+        # else:
+        #     all_users = [doc.to_dict() for doc in users_ref.stream()]
+        #     return jsonify(all_users), 200
     except Exception as e:
         return f"An Error Occurred: {e}"
+
 
 @app.route('/update', methods=['POST', 'PUT'])
 def update():
@@ -61,6 +65,7 @@ def update():
     except Exception as e:
         return f"An Error Occurred: {e}"
 
+
 @app.route('/delete', methods=['GET', 'DELETE'])
 def delete():
     """
@@ -73,6 +78,7 @@ def delete():
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occurred: {e}"
+
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':

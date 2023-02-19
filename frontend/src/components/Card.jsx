@@ -23,7 +23,7 @@ const CardImage = styled.img`
 
 // Whenever the card gets liked, make a post request to data
 
-function Card({ imageURL, id, cardLiked, caption }) {
+function Card({ imageURL, id, cardLiked = false, caption }) {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(cardLiked);
 

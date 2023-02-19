@@ -66,13 +66,22 @@ function Home() {
     "-0VVXIyqTCQUGVQ56lvnrw",
   ];
   useEffect(() => {
-    const arr = ids.map((id) => {
-      axios.get(`http://127.0.0.1:8080/list?id=${id}`).then((res) => {
-        return res["data"];
+    async function getFood() {
+      // an array of Promises waiting to be resolved
+      // if we did axios.get().then(), then we are expecting it to be resolved alr, since we are returning
+      let promises = ids.map((id) => {
+        return axios.get(`http://127.0.0.1:8080/list?id=${id}`);
+      });
+      return await Promise.all(promises).then((data) => {
+        return data;
+      });
+    }
+
+    getFood().then(async (res) => {
+      res.map((food) => {
+        console.log(food["data"]);
       });
     });
-    const users = await Promise.all(arr);
-    console.log(users)
   }, []);
   return (
     <div style={{ padding: "50px", paddingTop: "25px" }}>
