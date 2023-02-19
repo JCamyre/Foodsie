@@ -124,9 +124,7 @@ def user_finished():
         # food_list = ['test']
         if user_id:
             if cuisines:
-                cuisines_list = cuisines[1:len(cuisines) - 1]
-                cuisines_list = cuisines_list.split(',')
-                cuisines_list = [s[1:len(s) - 1] for s in cuisines_list]
+                cuisines_list = [cuisines]
             else:
                 cuisines_list = []
 
