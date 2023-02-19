@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import axios from "axios";
 import ReactLoading from "react-loading";
+import * as qs from "qs";
 
 // Maybe make it like the pinterest images, where it looks cooler.
 
@@ -13,17 +14,7 @@ function convertIDtoImageURL(id) {
 function Home() {
   const [foods, setFoods] = useState(false);
   const [likedFoods, setLikeFoods] = useState([]);
-  const [photoIds, setPhotoIds] = useState(null);
-  const ids = [
-    "--8pNvGp9ICBjJVck2OnTQ",
-    "--Kofko5jy33_vPJOEt4Ow",
-    "--S9xLJbQcfk74xKCkBAwA",
-    "--WqMu3zPYVePmsxABqhAA",
-    "--j4xVIdIlYpOmZbs7iszg",
-    "--zScnI03KioBVMtcOK6oQ",
-    "-0CCRlDxKDrooC9a3ZoF9A",
-    "-0VVXIyqTCQUGVQ56lvnrw",
-  ];
+
   useEffect(() => {
     async function getFood() {
       const ids = await axios
@@ -49,6 +40,17 @@ function Home() {
       setFoods(foods);
     });
   }, []);
+
+  function updateUserLikes() {
+    axios.post("http://localhost:8080/finished", {
+      params: {
+        likedFoods: likedFoods,
+      },
+      paramsSerializer: (params) => {
+        return qs.stringify(params);
+      },
+    });
+  }
 
   return (
     <div style={{ padding: "50px", paddingTop: "25px" }}>
@@ -77,7 +79,7 @@ function Home() {
       </div>
       <button
         onClick={() => {
-          console.log(likedFoods);
+          updateUserLikes();
         }}
       >
         User clicks this when they are done liking images

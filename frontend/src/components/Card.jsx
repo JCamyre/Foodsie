@@ -46,7 +46,7 @@ function Card({
           }
         }}
         src={imageURL}
-        alt="Car"
+        alt={caption}
       />
       <Heart
         onClick={() => {
