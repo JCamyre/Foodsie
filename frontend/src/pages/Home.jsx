@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import axios from "axios";
+import ReactLoading from "react-loading";
 
 // Maybe make it like the pinterest images, where it looks cooler.
 
@@ -38,7 +39,6 @@ function Home() {
         return food["data"];
       });
       setFoods(foods);
-      console.log(foods);
     });
   }, []);
   return (
@@ -62,6 +62,7 @@ function Home() {
               />
             );
           })}
+        {!foods && <ReactLoading type={"bubbles"} color={"black"} />}
       </div>
       <button>User clicks this when they are done liking images</button>
     </div>

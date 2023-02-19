@@ -8,8 +8,9 @@ function Food() {
   const { state } = useLocation();
   var imageURL;
   var liked;
+  var caption;
   if (state) {
-    var { imageURL, liked } = state;
+    var { imageURL, liked, caption } = state;
   }
   return (
     <div>
@@ -38,10 +39,15 @@ function Food() {
             }}
           >
             <div style={{ width: "50%" }}>
-              <Card imageURL={imageURL} id={id} cardLiked={liked} />
+              <Card
+                imageURL={imageURL}
+                id={id}
+                cardLiked={liked}
+                foodPage={true}
+              />
             </div>
             <div style={{ width: "50%", justifyContent: "flex-end" }}>
-              <h1>Food: {id}</h1>
+              <h1>{caption}</h1>
             </div>
           </div>
         </div>
