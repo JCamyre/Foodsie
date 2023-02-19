@@ -69,6 +69,7 @@ function Home() {
           );
         })}
       </div>
+      <button>User clicks this when they are done liking images</button>
     </div>
   );
 }
