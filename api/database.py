@@ -120,9 +120,24 @@ def user_finished():
     try:
         user_id = request.args.get('id')
         food_list = request.args.get('foods')
+        cuisines = request.args.get('c')
         # food_list = ['test']
         if user_id:
-            field_updates = {"food": food_list}
+            if cuisines:
+                cuisines_list = cuisines[1:len(cuisines) - 1]
+                cuisines_list = cuisines_list.split(',')
+                cuisines_list = [s[1:len(s) - 1] for s in cuisines_list]
+            else:
+                cuisines_list = []
+
+            food_list = food_list[1:len(food_list) - 1]
+            food_list = food_list.split(',')
+            food_list = [s[1:len(s) - 1] for s in food_list]
+            print(food_list)
+
+            field_updates = {"food": food_list,
+                            "cuisines": cuisines_list}
+
             users_ref.document(user_id).update(field_updates)
             return jsonify({"success": True}), 200
         else:
@@ -167,7 +182,7 @@ def user_update():
         return f"An Error Occurred: {e}"
 
 
-@app.route('/genrecs', methods=['GET'])
+@app.route('/genrecs', methods=['GET', 'POST'])
 def genrecs():
     """"
     genrecs(): generates the recommendations based on the user profile
@@ -190,7 +205,56 @@ def genrecs():
                 food_captions.append(cap)
 
             extracted = extract_food(food_captions)
-            rec = generate_item_rec(extracted)
+
+            cuisines = users_ref.document(user_id).get().to_dict()['cuisines']
+
+            if cuisines == []:
+                cuisines = None
+
+            rec = generate_item_rec(extracted, cuisines)['choices'][0]['text']
+            users_ref.document(user_id).update({'rec': rec})
+
+            return rec, 200
+        else:
+            all_users = [doc.to_dict() for doc in users_ref.stream()]
+            return jsonify(all_users), 200
+    except Exception as e:
+        return f"An Error Occurred: {e}"
+
+
+# TODO: FIX
+@app.route('/regen', methods=['GET'])
+def regen():
+    """"
+    regen(): generates new recommendations based on their dislikes likes
+    input: id, get original generation
+    We take user_id, and we grab the list of foods that they like
+    Call the food_firebase, get corresponding captions and put in a list
+    Feed into the query_recs function
+    Return recommendation, which is a str
+    """
+    try:
+        # Check if ID was passed to URL query
+        user_id = request.args.get('id')
+        cuisines = request.args.get('c')
+        if user_id:
+            user = users_ref.document(user_id).get()
+            foods = (user.to_dict())['food']
+
+            food_captions = []
+            for item in foods:
+                cap = food_ref.document(item).get().to_dict()['caption']
+                food_captions.append(cap)
+
+            extracted = extract_food(food_captions)
+
+            if cuisines:
+                cuisines = [cuisines]
+            else:
+                cuisines = None
+                
+            rec = generate_item_rec(extracted, cuisines)['choices'][0]['text']
+
             return rec, 200
         else:
             all_users = [doc.to_dict() for doc in users_ref.stream()]
