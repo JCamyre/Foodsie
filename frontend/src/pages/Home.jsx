@@ -13,6 +13,7 @@ function convertIDtoImageURL(id) {
 function Home() {
   const [foods, setFoods] = useState(false);
   const [likedFoods, setLikeFoods] = useState([]);
+  const [photoIds, setPhotoIds] = useState(null);
   const ids = [
     "--8pNvGp9ICBjJVck2OnTQ",
     "--Kofko5jy33_vPJOEt4Ow",
@@ -25,9 +26,15 @@ function Home() {
   ];
   useEffect(() => {
     async function getFood() {
+      const ids = await axios
+        .get("http://localhost:8080/init")
+        .then((photoIds) => {
+          return photoIds;
+        });
+
       // an array of Promises waiting to be resolved
       // if we did axios.get().then(), then we are expecting it to be resolved alr, since we are returning
-      let promises = ids.map((id) => {
+      let promises = ids["data"].map((id) => {
         return axios.get(`http://127.0.0.1:8080/list?id=${id}`);
       });
       return await Promise.all(promises).then((data) => {
