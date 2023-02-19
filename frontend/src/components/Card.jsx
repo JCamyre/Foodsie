@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 // Maybe add hover stuff
 const StyledCard = styled.div`
   width: 252px;
-  height: 435px;
+  height: 100%;
   background-color: transparent;
   padding: 10px;
   transition: ease-out 0.1s;

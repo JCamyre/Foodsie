@@ -13,7 +13,6 @@ function Food() {
   return (
     <div>
       {/* Obviously we will get food tags, title of dish, etc. from database */}
-      <h1>Card page for id: {id}</h1>
       <div
         style={{
           display: "flex",
@@ -25,11 +24,18 @@ function Food() {
           style={{
             borderRadius: "24px",
             width: "80%",
-            height: "400px",
             backgroundColor: "#ffffff",
+            padding: "24px",
           }}
         >
-          <Card imageURL={imageURL} id={id} />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ width: "50%" }}>
+              <Card imageURL={imageURL} id={id} />
+            </div>
+            <div style={{ width: "50%", justifyContent: "flex-end" }}>
+              <h1>Food: {id}</h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
