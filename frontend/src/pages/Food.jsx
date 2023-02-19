@@ -7,8 +7,9 @@ function Food() {
   // Once we have database, will prob not need to pass state, just access database from this page, using the ID as the thing we access
   const { state } = useLocation();
   var imageURL;
+  var liked;
   if (state) {
-    var { imageURL } = state;
+    var { imageURL, liked } = state;
   }
   return (
     <div>
@@ -18,6 +19,8 @@ function Food() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          paddingTop: "40px",
+          paddingBottom: "40px",
         }}
       >
         <div
@@ -28,9 +31,14 @@ function Food() {
             padding: "24px",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <div style={{ width: "50%" }}>
-              <Card imageURL={imageURL} id={id} />
+              <Card imageURL={imageURL} id={id} cardLiked={liked} />
             </div>
             <div style={{ width: "50%", justifyContent: "flex-end" }}>
               <h1>Food: {id}</h1>

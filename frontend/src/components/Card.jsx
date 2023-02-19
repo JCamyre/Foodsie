@@ -25,22 +25,25 @@ const CardImage = styled.img`
 
 function Card({ imageURL, id, cardLiked }) {
   const navigate = useNavigate();
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(cardLiked);
 
   return (
     <StyledCard>
+      <CardImage
+        onClick={() =>
+          navigate(`/food/${id}`, {
+            state: { imageURL: imageURL, liked: liked },
+          })
+        }
+        src={imageURL}
+        alt="Car"
+      />
       <Heart
         onClick={() => {
           setLiked(!liked);
         }}
         isActive={liked}
-      />
-      <CardImage
-        onClick={() =>
-          navigate(`/food/${id}`, { state: { imageURL: imageURL } })
-        }
-        src={imageURL}
-        alt="Car"
+        style={{ height: "50px" }}
       />
     </StyledCard>
   );
